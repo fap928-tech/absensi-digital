@@ -1,0 +1,37 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Config collection (school settings, geofence, credentials)
+    match /configs/{configId} {
+      allow read: if isValidId(configId);
+      allow write: if isValidId(configId);
+    }
+
+    // Users collection (Admin, Guru, Siswa)
+    match /users/{userId} {
+      allow read: if isValidId(userId);
+      allow write: if isValidId(userId);
+    }
+
+    // Attendance records (Face capture, Geolocation, Hidden trace mode)
+    match /attendances/{attendanceId} {
+      allow read: if isValidId(attendanceId);
+      allow write: if isValidId(attendanceId);
+    }
+
+    // Daily submissions (Setoran harian tahfidz & tugas)
+    match /submissions/{submissionId} {
+      allow read: if isValidId(submissionId);
+      allow write: if isValidId(submissionId);
+    }
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "entities": {
+    "SchoolConfig": {
+      "title": "SchoolConfig",
+      "description": "School profile, geofencing coordinates, QR security salt, and system parameters",
+      "type": "object",
+      "properties": {
+        "schoolName": { "type": "string", "maxLength": 150 },
+        "schoolLogo": { "type": "string", "maxLength": 100000 },
+        "schoolAddress": { "type": "string", "maxLength": 300 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "radiusMeters": { "type": "number" },
+        "checkInStartTime": { "type": "string", "maxLength": 10 },
+        "checkInEndTime": { "type": "string", "maxLength": 10 },
+        "lateThresholdTime": { "type": "string", "maxLength": 10 },
+        "adminUsername": { "type": "string", "maxLength": 50 },
+        "adminPassword": { "type": "string", "maxLength": 100 },
+        "qrSecuritySalt": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["schoolName", "latitude", "longitude", "radiusMeters"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profiles for Admin, Guru (Teachers), and Murid (Students)",
+      "type": "object",
+      "properties": {
+        "role": { "type": "string", "enum": ["admin", "guru", "murid"] },
+        "name": { "type": "string", "maxLength": 100 },
+        "username": { "type": "string", "maxLength": 50 },
+        "password": { "type": "string", "maxLength": 100 },
+        "nisn": { "type": "string", "maxLength": 30 },
+        "nip": { "type": "string", "maxLength": 30 },
+        "className": { "type": "string", "maxLength": 50 },
+        "parentPhone": { "type": "string", "maxLength": 30 },
+        "parentName": { "type": "string", "maxLength": 100 },
+        "avatar": { "type": "string", "maxLength": 100000 }
+      },
+      "required": ["role", "name", "username"]
+    },
+    "AttendanceRecord": {
+      "title": "AttendanceRecord",
+      "description": "Daily student and staff attendance record with biometric and geolocation proofs",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string", "maxLength": 100 },
+        "studentName": { "type": "string", "maxLength": 100 },
+        "className": { "type": "string", "maxLength": 50 },
+        "date": { "type": "string", "maxLength": 15 },
+        "checkInTime": { "type": "string", "maxLength": 15 },
+        "checkOutTime": { "type": "string", "maxLength": 15 },
+        "status": { "type": "string", "enum": ["hadir", "terlambat", "izin", "sakit", "alpa", "mencurigakan"] },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "distanceMeters": { "type": "number" },
+        "inRadius": { "type": "boolean" },
+        "photoProof": { "type": "string", "maxLength": 150000 },
+        "method": { "type": "string", "enum": ["face_camera", "qr_code", "manual_teacher"] },
+        "isHiddenFromRecap": { "type": "boolean" },
+        "suspiciousReason": { "type": "string", "maxLength": 300 },
+        "parentNotifiedWA": { "type": "boolean" },
+        "notes": { "type": "string", "maxLength": 300 }
+      },
+      "required": ["studentId", "studentName", "className", "date", "status"]
+    },
+    "DailySubmission": {
+      "title": "DailySubmission",
+      "description": "Student daily task, tahfidz, or habit submission",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string", "maxLength": 100 },
+        "studentName": { "type": "string", "maxLength": 100 },
+        "className": { "type": "string", "maxLength": 50 },
+        "date": { "type": "string", "maxLength": 15 },
+        "type": { "type": "string", "enum": ["tahfidz", "tugas", "ibadah", "literasi", "kebiasaan_baik"] },
+        "title": { "type": "string", "maxLength": 150 },
+        "details": { "type": "string", "maxLength": 1000 },
+        "status": { "type": "string", "enum": ["menunggu_verifikasi", "disetujui", "perlu_perbaikan"] },
+        "feedbackTeacher": { "type": "string", "maxLength": 500 }
+      },
+      "required": ["studentId", "studentName", "className", "date", "type", "title"]
+    }
+  },
+  "firestore": {
+    "/configs/{configId}": {
+      "schema": "SchoolConfig",
+      "description": "School operational settings, geofence, and master keys"
+    },
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "System accounts for admin, teachers, and students"
+    },
+    "/attendances/{attendanceId}": {
+      "schema": "AttendanceRecord",
+      "description": "Biometric and geolocated attendance logs"
+    },
+    "/submissions/{submissionId}": {
+      "schema": "DailySubmission",
+      "description": "Daily student habit, tahfidz, and homework submissions"
+    }
+  }
+}

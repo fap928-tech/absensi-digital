@@ -1,0 +1,6 @@
+{
+  "name": "EduPresensi Pro - Sistem Absensi Cerdas & Geolokasi Sekolah",
+  "description": "Aplikasi presensi pintar sekolah dengan verifikasi geolokasi GPS, deteksi wajah kamera, QR code anti-Google Lens, analitik real-time, setoran harian, dan notifikasi WhatsApp orang tua.",
+  "requestFramePermissions": ["camera", "geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
